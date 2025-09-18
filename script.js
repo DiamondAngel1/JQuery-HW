@@ -1,51 +1,49 @@
-class Marker {
-    constructor(color, inkLevel) {
-        this.color = color;
-        this.inkLevel = inkLevel;
+class ExtendedDate extends Date {
+    constructor(dateString) {
+        super(dateString);
     }
 
-    setColor(newColor) {
-        this.color = newColor;
+    getTextDate() {
+        const months = [
+            'січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'
+        ];
+        return `${this.getDate()} ${months[this.getMonth()]}`;
     }
 
-    print(text) {
-        let printedText = '';
-        for (let char of text) {
-            if (this.inkLevel <= 0){
-                alert('Не хватає чорнил. Заправте маркер.');
-                break;
-            }
-            if (char !== ' ') {
-                if (this.inkLevel >= 0.5) {
-                    printedText += char;
-                    this.inkLevel -= 0.5;
-                }
-            } 
-            else {
-                printedText += char;
-            }
-        }
-        $('#output').html(`<span style="color:${this.color}; font-size: 18px;">${printedText}</span>`);
-        $('#inkLevel').text(`Рівень чорнил: ${this.inkLevel.toFixed(1)}%`);
+    isFutureOrToday() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const inputDate = new Date(this);
+        inputDate.setHours(0, 0, 0, 0);
+        return inputDate >= today;
     }
-}
 
-class RefillableMarker extends Marker {
-    refill() {
-        this.inkLevel = 100;
-        $('#inkLevel').text(`Маркер заправлено. Рівень чорнил: ${this.inkLevel}%`);
+    isLeapYear() {
+        const year = this.getFullYear();
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    }
+
+    getNextDate() {
+        const next = new Date(this);
+        next.setDate(this.getDate() + 1);
+        return next.toLocaleDateString('uk-UA');
     }
 }
 
-const myMarker = new RefillableMarker($('#colorPicker').val(), 100);
+$('#analyzeBtn').click(() => {
+    const dateStr = $('#dateInput').val();
+    if (!dateStr) {
+        $('#output').html('<p class="result">Оберіть дату</p>');
+        return;
+    }
+    const extDate = new ExtendedDate(dateStr);
 
-$('#printBtn').click(() => {
-    const text = $('#textInput').val();
-    const selectedColor = $('#colorPicker').val();
-    myMarker.setColor(selectedColor);
-    myMarker.print(text);
-});
+    const results = `
+        <p class="result"><strong>Текстова дата:</strong> ${extDate.getTextDate()}</p>
+        <p class="result"><strong>Дата в майбутньому або сьогодні:</strong> ${extDate.isFutureOrToday()}</p>
+        <p class="result"><strong>Чи високосний рік:</strong> ${extDate.isLeapYear()}</p>
+        <p class="result"><strong>Наступна дата:</strong> ${extDate.getNextDate()}</p>
+    `;
 
-$('#refillBtn').click(() => {
-    myMarker.refill();
+    $('#output').html(results);
 });

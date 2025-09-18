@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <title>Маркер з вибором кольору</title>
+  <title>ExtendedDate</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="/style.css">
 </head>
@@ -10,24 +10,18 @@
 
   <div class="container">
     <div class="panel">
-      <h2>Налаштування маркера</h2>
+      <h2>ExtendedDate</h2>
 
-      <label>Введіть текст для друку:</label>
-      <input type="text" id="textInput">
-
-      <label>Оберіть колір маркера:</label>
-      <input type="color" id="colorPicker" value="#0000ff">
+      <label>Оберіть дату:</label>
+      <input type="date" id="dateInput">
 
       <div class="controls">
-        <button id="printBtn">Друкувати</button>
-        <button id="refillBtn">Заправити</button>
+        <button id="analyzeBtn">Аналізувати</button>
       </div>
-
-      <p id="inkLevel">Рівень чорнил: 100%</p>
     </div>
 
     <div class="output-area" id="output">
-      <p style="color: #999;">Тут буде надрукований текст...</p>
+      <p style="color: #999;">Результати зʼявляться тут... Колись...</p>
     </div>
   </div>
 
