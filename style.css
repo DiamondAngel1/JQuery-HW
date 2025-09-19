@@ -19,27 +19,3 @@ h2 {
     margin-top: 0;
     text-align: center;
 }
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #f0fbff;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #99d6ff;
-}
-
-th {
-    background-color: #b3e0ff;
-    color: #004466;
-}
-
-tr:hover {
-    background-color: #e6f7ff;
-}

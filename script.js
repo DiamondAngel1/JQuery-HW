@@ -39,6 +39,36 @@ class EmpTable {
     }
 }
 
+class StyledEmpTable extends EmpTable {
+    getStyles() {
+        return `<style>
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                        background-color: #f0fbff;
+                        border-radius: 10px;
+                        overflow: hidden;
+                    }
+                    th, td {
+                        padding: 12px;
+                        text-align: left;
+                        border-bottom: 1px solid #99d6ff;
+                    }
+                    th {
+                        background-color: #b3e0ff;
+                        color: #004466;
+                    }
+                    tr:hover {
+                        background-color: #e6f7ff;
+                    }
+                </style>`;
+    }
+    getHtml() {
+        return this.getStyles() + super.getHtml();
+    }
+}
+
 const bankEmployees = [
     new Employee("Мудрий Семен", "23","mudriy3000@gmail.com", "Касир", "Операційний"),
     new Employee("Козак Ахмед","32","spravzhniyKozak@ua.fm", "Фінансовий консультант", "Кредитний"),
@@ -47,5 +77,5 @@ const bankEmployees = [
     new Employee("Рішалово Петро","45","rishuchiyRishalovo@ua.fm", "Спеціаліст із заборгованості", "Кредитний")
 ];
 
-const table = new EmpTable(bankEmployees);
+const table = new StyledEmpTable(bankEmployees);
 $('#tableContainer').html(table.getHtml());
