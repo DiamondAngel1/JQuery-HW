@@ -1,49 +1,51 @@
-class ExtendedDate extends Date {
-    constructor(dateString) {
-        super(dateString);
-    }
-
-    getTextDate() {
-        const months = [
-            'січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'
-        ];
-        return `${this.getDate()} ${months[this.getMonth()]}`;
-    }
-
-    isFutureOrToday() {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const inputDate = new Date(this);
-        inputDate.setHours(0, 0, 0, 0);
-        return inputDate >= today;
-    }
-
-    isLeapYear() {
-        const year = this.getFullYear();
-        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-    }
-
-    getNextDate() {
-        const next = new Date(this);
-        next.setDate(this.getDate() + 1);
-        return next.toLocaleDateString('uk-UA');
+class Employee {
+    constructor(name, age, email, position, department) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.position = position;
+        this.department = department;
     }
 }
 
-$('#analyzeBtn').click(() => {
-    const dateStr = $('#dateInput').val();
-    if (!dateStr) {
-        $('#output').html('<p class="result">Оберіть дату</p>');
-        return;
+class EmpTable {
+    constructor(employees) {
+        this.employees = employees;
     }
-    const extDate = new ExtendedDate(dateStr);
 
-    const results = `
-        <p class="result"><strong>Текстова дата:</strong> ${extDate.getTextDate()}</p>
-        <p class="result"><strong>Дата в майбутньому або сьогодні:</strong> ${extDate.isFutureOrToday()}</p>
-        <p class="result"><strong>Чи високосний рік:</strong> ${extDate.isLeapYear()}</p>
-        <p class="result"><strong>Наступна дата:</strong> ${extDate.getNextDate()}</p>
-    `;
+    getHtml() {
+        let html = `<table>
+                      <thead>
+                        <tr>
+                          <th>Ім’я</th>
+                          <th>Вік</th>
+                          <th>Емейл</th>
+                          <th>Посада</th>
+                          <th>Відділ</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        this.employees.forEach(emp => {
+            html += `<tr>
+                        <td>${emp.name}</td>
+                        <td>${emp.age}</td>
+                        <td>${emp.email}</td>
+                        <td>${emp.position}</td>
+                        <td>${emp.department}</td>
+                    </tr>`;
+        });
+        html += `</tbody></table>`;
+        return html;
+    }
+}
 
-    $('#output').html(results);
-});
+const bankEmployees = [
+    new Employee("Мудрий Семен", "23","mudriy3000@gmail.com", "Касир", "Операційний"),
+    new Employee("Козак Ахмед","32","spravzhniyKozak@ua.fm", "Фінансовий консультант", "Кредитний"),
+    new Employee("Квітка Леся","19","kvitochka2093@gmail.com", "Оператор Call-центру", "Обслуговування клієнтів"),
+    new Employee("Хомяк Йосип","21", "xomekZvichainiy@ua.fm", "ІТ-спеціаліст", "Технічний"),
+    new Employee("Рішалово Петро","45","rishuchiyRishalovo@ua.fm", "Спеціаліст із заборгованості", "Кредитний")
+];
+
+const table = new EmpTable(bankEmployees);
+$('#tableContainer').html(table.getHtml());
