@@ -6,16 +6,45 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: auto;
     background-color: #cceeff;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow-x: auto;
 }
 
 h2 {
     color: #007acc;
     margin-top: 0;
     text-align: center;
+}
+
+button {
+    padding: 6px 12px;
+    background-color: #0099cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+button:hover {
+    background-color: #0077aa;
+}
+
+#createEmployeeForm input[type="email"], [type="text"], [type="number"] {
+    width: 100%;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #99d6ff;
+    border-radius: 6px;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+}
+
+form#createEmployeeForm {
+    justify-self: center;
+    width: 60%;
 }

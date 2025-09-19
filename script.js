@@ -22,16 +22,20 @@ class EmpTable {
                           <th>Емейл</th>
                           <th>Посада</th>
                           <th>Відділ</th>
+                          <th></th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>`;
-        this.employees.forEach(emp => {
+        this.employees.forEach((emp, index) => {
             html += `<tr>
                         <td>${emp.name}</td>
                         <td>${emp.age}</td>
                         <td>${emp.email}</td>
                         <td>${emp.position}</td>
                         <td>${emp.department}</td>
+                        <td><button id="del" data-index="${index}">Видалити</button></td>
+                        <td><button id="edit">Редагувати</button></td>
                     </tr>`;
         });
         html += `</tbody></table>`;
@@ -44,6 +48,8 @@ class StyledEmpTable extends EmpTable {
         return `<style>
                     table {
                         width: 100%;
+                        table-layout: fixed;
+                        word-wrap: break-word;
                         border-collapse: collapse;
                         margin-top: 20px;
                         background-color: #f0fbff;
@@ -79,3 +85,64 @@ const bankEmployees = [
 
 const table = new StyledEmpTable(bankEmployees);
 $('#tableContainer').html(table.getHtml());
+
+$(document).on('click', '#del', function() {
+    const index = $(this).data('index');
+    bankEmployees.splice(index, 1);
+    const newTable = new StyledEmpTable(bankEmployees);
+    $('#tableContainer').html(newTable.getHtml());
+});
+
+$(document).on('click', '#edit', function() {
+    const row = $(this).closest('tr');
+    const cells = row.find('td');
+    if ($(this).text() === 'Редагувати') {
+        for (let i = 0; i < cells.length - 2; i++) {
+            const cell = $(cells[i]);
+            const value = cell.text();
+            cell.html(`<input type="text" value="${value}">`);
+        }
+        $(this).text('Зберегти');
+    }
+     else {
+        for (let i = 0; i < cells.length - 2; i++) {
+            const cell = $(cells[i]);
+            const input = cell.find('input');
+            if (input.length) {
+                const newValue = input.val();
+                cell.text(newValue);
+            }
+        }
+        $(this).text('Редагувати');
+    }
+});
+
+const createFormHtml = `
+    <form id="createEmployeeForm">
+        <label for="name">Ім’я:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="age">Вік:</label>
+        <input type="number" id="age" name="age" required>
+        <label for="email">Емейл:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="position">Посада:</label>
+        <input type="text" id="position" name="position" required>
+        <label for="department">Відділ:</label>
+        <input type="text" id="department" name="department" required>
+        <button type="submit">Додати</button>
+    </form>
+`;
+$('#createEmployee').html(createFormHtml);
+
+$('#createEmployeeForm').on('submit', function(event) {
+    event.preventDefault();
+    const name = $('#name').val();
+    const age = $('#age').val();
+    const email = $('#email').val();
+    const position = $('#position').val();
+    const department = $('#department').val();
+    const newEmployee = new Employee(name, age, email, position, department);
+    bankEmployees.push(newEmployee);
+    const newTable = new StyledEmpTable(bankEmployees);
+    $('#tableContainer').html(newTable.getHtml());
+});
